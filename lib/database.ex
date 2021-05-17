@@ -1,20 +1,20 @@
 defmodule Database do
   def main(_args) do
     StoreServer.start()
+    TransactionServer.start()
     receive_command()
   end
 
-  defp get_arg(io_str, index) do
+  def get_arg(io_str, index) do
     io_str
     |> String.split(" ")
     |> Enum.at(index)
     |> String.trim
-    |> String.downcase
   end
 
   defp receive_command do
     io_str = IO.gets(">>")
-    cmd = get_arg(io_str, 0)
+    cmd = get_arg(io_str, 0) |> String.downcase
     cmd_list = io_str
                |> String.split(~r{\s+})
                |> Enum.join(" ")
@@ -36,6 +36,8 @@ defmodule Database do
   end
 
   defp execute_command("set", arg1, arg2) do
+    TransactionServer.add("SET #{arg1} #{arg2}")
+    Process.sleep(3000)
     StoreServer.set(arg1, arg2)
     receive_command()
   end
@@ -49,8 +51,10 @@ defmodule Database do
   end
 
   defp execute_command("delete", arg) do
-    StoreServer.delete(arg)
-    receive_command()
+   TransactionServer.add("DELETE #{arg}")
+   Process.sleep(3000)
+   StoreServer.delete(arg)
+   receive_command()
   end
 
   defp execute_command("count", arg) do
@@ -60,17 +64,23 @@ defmodule Database do
   end
 
   defp execute_command("begin") do
-    IO.puts "\nbegin."
+    TransactionServer.begin()
+    receive_command()
+  end
+
+  defp execute_command("t") do
+    IO.inspect TransactionServer.get_transactions()
     receive_command()
   end
 
   defp execute_command("rollback") do
-    IO.puts "\nrollback."
+    TransactionServer.rollback()
     receive_command()
   end
 
   defp execute_command("commit") do
     IO.puts "\ncommit."
+    TransactionServer.commit()
     receive_command()
   end
 

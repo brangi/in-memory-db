@@ -35,12 +35,21 @@ defmodule StoreServer do
 
   def handle_call({ :count, value }, _from, state) do
     count_values = Map.values(state)
+    IO.inspect count_values
+    IO.inspect value
+
+
     count_name_values = Enum.reduce count_values, 0, fn(x, acc) ->
       if x === value do
         acc + 1
       end
     end
-    { :reply, %{count: count_name_values} , state }
+   count = case count_name_values do
+      nil -> 0
+      _-> count_name_values
+    end
+    IO.inspect count
+    { :reply, %{count: count} , state }
   end
 
   def handle_cast({ :set, name, value }, state) do
