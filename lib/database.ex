@@ -79,7 +79,6 @@ defmodule Database do
   end
 
   defp execute_command("commit") do
-    IO.puts "\ncommit."
     TransactionServer.commit()
     receive_command()
   end
