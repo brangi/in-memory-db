@@ -1,21 +1,58 @@
 # Database
 
-**TODO: Add description**
+**In memory database**
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `database` to your list of dependencies in `mix.exs`:
+If you using mac, install the latest version of elixir 
+`brew install elixir` OR `sudo port install elixir`
 
-```elixir
-def deps do
-  [
-    {:database, "~> 0.1.0"}
-  ]
-end
+FOR windows or linux - https://elixir-lang.org/install.html
+
+Pull the latest version `git clone https://github.com/brangi/in-memory-db`
+
+
+## Compile
+
+cd `in-memory-db`
+
+run `mix escript.build`
+
+## Run
+
+In the root directory, you should see these files, run `database`
+
+```
+README.md	_build		database	lib		mix.exs		test
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/database](https://hexdocs.pm/database).
 
+start the program
+
+`./database`
+
+You should be able to input commands 
+
+````
+% ./database
+>>GET a
+NULL
+>>SET a foo
+>>SET b foo
+>>COUNT foo
+2
+>>COUNT bar
+0
+>>DELETE a
+>>COUNT foo
+1
+>>SET b baz
+>>COUNT foo
+0
+>>GET b
+baz
+>>GET B
+NULL
+>>END
+Exit.
+````
