@@ -147,13 +147,9 @@ defmodule TransactionServer do
                 {current_cmd_list, new_list}
             end
           end)
-
-          ##Check if state record is null in transaction map and save latest state when
-          ## is a modifying command (DELETE, SET)
           current_state_last_t = Map.get(last_t,last_t |> Map.keys |> Enum.at(1))
           {_, new_tr_rec2} = update_new_state_for_t(current_state_last_t, last_t,  new_tr_rec1)
 
-          ##Map.merge(new_tr_rec1, new_tr_rec2 )
           new_transactions = [ build_new_t_rec(last_t, new_tr_rec1, new_tr_rec2) | List.delete(current_transactions, last_t)]
           {current_transactions, new_transactions}
         end)

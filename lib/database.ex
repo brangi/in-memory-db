@@ -37,7 +37,7 @@ defmodule Database do
 
   defp execute_command("set", arg1, arg2) do
     TransactionServer.add("SET #{arg1} #{arg2}")
-    Process.sleep(3000)
+    Process.sleep(1000)
     StoreServer.set(arg1, arg2)
     receive_command()
   end
@@ -52,7 +52,7 @@ defmodule Database do
 
   defp execute_command("delete", arg) do
    TransactionServer.add("DELETE #{arg}")
-   Process.sleep(3000)
+   Process.sleep(1000)
    StoreServer.delete(arg)
    receive_command()
   end
