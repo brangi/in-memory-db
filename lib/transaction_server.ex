@@ -21,10 +21,6 @@ defmodule TransactionServer do
     GenServer.call(__MODULE__, :get_last_t)
   end
 
-  def add(t) do
-    GenServer.cast(__MODULE__, {:add_cmd, t})
-  end
-
   def begin() do
     GenServer.cast(__MODULE__, :begin)
   end
